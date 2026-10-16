@@ -19,5 +19,17 @@ model Link {
   originalUrl String   @map("original_url")
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
 
+  clicks Click[]
   @@map("links")
+}
+
+model Click {
+  id          Int      @id @default(autoincrement())
+  clickedAt   DateTime @default(now()) @map("clicked_at") @db.Timestamptz(3)
+  linkId      Int      @map("link_id")
+  referrer    String?
+  
+  link Link @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  @@index([linkId, clickedAt])
+  @@map("clicks")
 }

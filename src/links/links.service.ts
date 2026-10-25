@@ -29,4 +29,11 @@ export class LinksService {
     }
     throw new InternalServerErrorException('Could not generate a unique code');
   }
+
+  async getOriginalUrlByCode(code: string) {
+    const link = await this.prisma.link.findUnique({
+      where: { code },
+    });
+    return link ? link.originalUrl : null;
+  }
 }
